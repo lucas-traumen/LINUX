@@ -1,2 +1,2 @@
-# L-c-Tr-
+
 LINUX_EMBEDDED 
