@@ -24,6 +24,7 @@ Sensor* createSensor(SensorType type) {
             break;
         case SENSOR_ATMOSPHERE:
             *sensor = createAtmosphereSensor();
+            break;
         default:
             free(sensor);
             return NULL; // Invalid sensor type
