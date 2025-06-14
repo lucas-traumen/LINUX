@@ -7,7 +7,7 @@ static UART_Builder* setBaudRate(UART_Builder* builder, uint32_t baudRate) {
     if (baudRate < 1200 || baudRate > 115200) {
         printf("Error: Invalid baud rate. Must be between 1200 and 115200.\n");
         return builder;
-    }
+    }   
     builder->config.baudRate = baudRate;
     return builder;
 }
