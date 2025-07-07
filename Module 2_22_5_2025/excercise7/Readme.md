@@ -31,6 +31,8 @@ Deleting .exe file : `make clean`
 
   
 *Trường hợp 1:*
+
+
 ```
 led_set_pixel_color(0, 255, 0, 0);     // Red
 led_set_pixel_color(1, 0, 255, 0);     // Green
@@ -54,7 +56,11 @@ Ta xét 1 trường hợp đầu là Red 🦫( maybe i'm lazy)\
    Bit 31     ...     24 | 23 ... 16 | 15 ... 8 | 7 ... 0\
      [Không dùng]     |   Green   |   Red    |  Blue\
   ->Lúc này màn hình sẽ xuất `Pixel 0: 0x00FF00` *Vậy là led ở vị trí đầu trở thành màu đỏ*\
+
+  
 *Trường hợp 2:*
+
+
 `led_fill(128, 0, 128)`\
 Cấu trúc khá giống `led_set_pixel_color` nó sẽ set toàn bộ thay vì từng pixel(led)\
 Và kết quả là:
