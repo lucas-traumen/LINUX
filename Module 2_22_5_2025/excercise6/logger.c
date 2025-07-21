@@ -23,9 +23,9 @@ int logger_init(const char *log_filename, LogLevel level) {
     current_level = level;
     if (log_filename) {
         log_file = fopen(log_filename, "a");
-        if (!log_file) return -1;
+        if (!log_file) return ERROR_INITIALATION;
     }
-    return 0;
+    return 0;   
 }
 
 void logger_shutdown() {

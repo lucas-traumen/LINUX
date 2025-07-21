@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <time.h>
 
+#define ERROR_INITIALATION -1
 // Log levels based on syslog
 typedef enum {
     LOG_EMERGENCY = 0,
