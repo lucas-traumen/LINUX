@@ -1,5 +1,0 @@
-[2025-07-08 18:28:43] [INFO] [main.c:9] - Application started.
-[2025-07-08 18:28:43] [WARNING] [main.c:10] - This is a warning.
-[2025-07-08 18:28:43] [ERROR] [main.c:11] - An error occurred: connection failed
-[2025-07-08 18:28:43] [DEBUG] [main.c:12] - Debug details: x = 42
-[2025-07-08 18:28:43] [CRITICAL] [main.c:16] - Critical failure!
