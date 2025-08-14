@@ -19,9 +19,9 @@ $(OBJ_DIR)/%.o: %.c $(INC_FILES)
 build: $(OBJ_FILES)
 	$(CC) -o ./bin/main.exe $^
 
-all: build
+all:
 	./bin/main.exe
-
+	
 clean:
 	rm -f ./obj/*.o ./bin/*.exe
 
