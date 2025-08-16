@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 static Logger *singletonLogger = NULL;
-static char buffer[LOG_BUFFER_SIZE];
+static char buffer[LOG_BUFFER_SIZE_BYTES];
 
 static void get_timestamp(char *buffer, size_t size) {
     time_t now = time(NULL);
@@ -28,23 +28,31 @@ static void logMessage(LogLevel level, const char *format, ...) {
     fprintf(singletonLogger->logFile,"\n");
 }
 
-void checkThresholds(size_t currentRAM, size_t currentStorage) {
-    if (!singletonLogger) return;
-
-    if (currentRAM > singletonLogger->ramThreshold_bytes) {
-        singletonLogger->log(LOG_WARNING, "RAM usage exceeded threshold: %zu bytes", currentRAM);
-        buzzer_beep_ms(singletonLogger->logFile,1000);
+void checkThresholds(size_t currentRAM, size_t currentStorage, int cpuUsage, int voltage, int temperature) {
+    if (cpuUsage > singletonLogger->cpuUsageThreshold_percent) {
+        singletonLogger->log(LOG_WARNING, "CPU usage exceeded: %d%%", cpuUsage);
+        buzzer_beep_ms(singletonLogger->logFile, 500);
     }
-
-    if (currentStorage > singletonLogger->storageThreshold_bytes) {
-        singletonLogger->log(LOG_WARNING, "Storage usage exceeded threshold: %zu bytes", currentStorage);
-        buzzer_beep_ms(singletonLogger->logFile,1000);
+    if (currentRAM < singletonLogger->ramThreshold_bytes) {
+        singletonLogger->log(LOG_WARNING, "Low RAM: %zu bytes left", currentRAM);
+        buzzer_beep_ms(singletonLogger->logFile, 500);
     }
-} 
-void setThresholds(size_t ram, size_t storage) {
-    if (!singletonLogger) return;
+    if (voltage < singletonLogger->voltageThreshold_mV) {
+        singletonLogger->log(LOG_ERROR, "Voltage low: %dmV", voltage);
+        buzzer_beep_ms(singletonLogger->logFile, 1000);
+    }
+    if (temperature > singletonLogger->temperatureThreshold_C) {
+        singletonLogger->log(LOG_CRITICAL, "Overheat: %d °C", temperature);
+        buzzer_beep_ms(singletonLogger->logFile, 1500);
+    }
+}
+void setThresholds(size_t ram, size_t storage, int cpu_precent, int voltage, int temprature ) {
+    if (singletonLogger == NULL) return; 
     singletonLogger->ramThreshold_bytes = ram;
     singletonLogger->storageThreshold_bytes = storage;
+    singletonLogger->cpuUsageThreshold_percent = cpu_precent;
+    singletonLogger->voltageThreshold_mV = voltage;
+    singletonLogger->temperatureThreshold_C = temprature;
 }
 
 Logger *getLoggerInstance(void) {
@@ -61,8 +69,8 @@ Logger *getLoggerInstance(void) {
         singletonLogger->log = logMessage;
         singletonLogger->checkThresholds = checkThresholds;
         singletonLogger->setThresholds = setThresholds;
-        if (singletonLogger->logFile && LOG_BUFFER_SIZE > 0){
-            setvbuf(singletonLogger->logFile,buffer,_IOFBF,LOG_BUFFER_SIZE);
+        if (singletonLogger->logFile && LOG_BUFFER_SIZE_BYTES > 0){
+            setvbuf(singletonLogger->logFile,buffer,_IOFBF,LOG_BUFFER_SIZE_BYTES);
         }
     }
     return singletonLogger;

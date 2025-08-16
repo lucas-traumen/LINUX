@@ -8,7 +8,7 @@
 #include <time.h>
 #include "buzzer.h"
 
-#define LOG_BUFFER_SIZE    65536
+#define LOG_BUFFER_SIZE_BYTES   65536
 
 typedef enum {
     LOG_EMERGENCY = 0,
@@ -24,11 +24,15 @@ typedef enum {
 typedef struct {
     FILE *logFile;
     LogLevel currentLogLevel;
-    size_t ramThreshold_bytes;        
-    size_t storageThreshold_bytes;    
+    size_t ramThreshold_bytes;
+    size_t storageThreshold_bytes;
+    int cpuUsageThreshold_percent;
+    int voltageThreshold_mV;
+    int temperatureThreshold_C;  
     void (*log)(LogLevel, const char*, ...);
-    void (*checkThresholds)(size_t currentRAM, size_t currentStorage);
-    void (*setThresholds)(size_t ram, size_t storage);
+    // Methods
+    void (*checkThresholds)(size_t currentRAM, size_t currentStorage, int cpuUsage, int voltage, int temperature);
+    void (*setThresholds)(size_t ram, size_t storage, int cpuUsage, int voltage, int temperature);
 } Logger;
 
 Logger *getLoggerInstance(void);
