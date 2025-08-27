@@ -1,4 +1,3 @@
-// logger.h
 #ifndef LOGGER_H
 #define LOGGER_H
 
@@ -24,15 +23,7 @@ typedef enum {
 typedef struct {
     FILE *logFile;
     LogLevel currentLogLevel;
-    size_t ramThreshold_bytes;
-    size_t storageThreshold_bytes;
-    int cpuUsageThreshold_percent;
-    int voltageThreshold_mV;
-    int temperatureThreshold_C;  
     void (*log)(LogLevel, const char*, ...);
-    // Methods
-    void (*checkThresholds)(size_t currentRAM, size_t currentStorage, int cpuUsage, int voltage, int temperature);
-    void (*setThresholds)(size_t ram, size_t storage, int cpuUsage, int voltage, int temperature);
 } Logger;
 
 Logger *getLoggerInstance(void);
